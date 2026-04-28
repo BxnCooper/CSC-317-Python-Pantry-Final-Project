@@ -1,0 +1,38 @@
+<RegisterScreen>:
+    name: 'register'
+    BoxLayout:
+        orientation: 'vertical'
+        HeaderBar:
+            Image:
+                source: app.icon_path('logo')
+                size_hint_x: None
+                width: dp(40)
+            Label:
+                text: 'Register'
+                color: app.text_color
+                font_size: app.fs_lg
+
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(20)
+            spacing: dp(12)
+            
+            BoxLayout:
+                size_hint_y: None
+                height: '40dp'
+                TextInput:
+                    id: user
+                    hint_text: 'username'
+                TextInput:
+                    id: pwd
+                    hint_text: 'password'
+            Button:
+                text: 'Create'
+                size_hint_y: None
+                height: '40dp'
+                on_release: root.do_register(user.text, pwd.text)
+            Button:
+                text: 'Back to Login'
+                size_hint_y: None
+                height: '40dp'
+                on_release: app.goto('login')

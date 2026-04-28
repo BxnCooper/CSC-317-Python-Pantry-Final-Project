@@ -1,0 +1,37 @@
+<DonorManagementScreen>:
+    name: 'donor_management'
+    BoxLayout:
+        orientation: 'vertical'
+        HeaderBar:
+            Image:
+                source: app.icon_path('donors')
+                size_hint_x: None
+                width: dp(40)
+            Label:
+                text: 'Donor Management'
+                color: app.text_color
+                font_size: app.fs_lg
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(20)
+            spacing: dp(12)
+            StyledCard:
+                Label:
+                    text: 'Manage donor records and schedules.'
+                    color: app.text_color
+            ScrollView:
+                do_scroll_x: False
+                GridLayout:
+                    id: donor_list
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(8)
+            BoxLayout:
+                size_hint_y: None
+                height: dp(48)
+                StyledButton:
+                    text: 'Add Donor'
+                StyledButton:
+                    text: 'Back'
+                    on_release: app.goto('dashboard')

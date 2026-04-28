@@ -1,0 +1,37 @@
+<LoginScreen>:
+    name: 'login'
+    BoxLayout:
+        orientation: 'vertical'
+        HeaderBar:
+            Image:
+                source: app.icon_path('logo')
+                size_hint_x: None
+                width: dp(40)
+            Label:
+                text: 'Python Pantry'
+                color: app.text_color
+                font_size: app.fs_lg
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(20)
+            spacing: dp(12)
+            StyledCard:
+                Label:
+                    text: 'Welcome back'
+                    font_size: app.fs_lg
+                    color: app.text_color
+            BoxLayout:
+                size_hint_y: None
+                height: dp(40)
+                TextInput:
+                    id: user
+                    hint_text: 'username'
+                TextInput:
+                    id: pwd
+                    hint_text: 'password'
+            StyledButton:
+                text: 'Login'
+                on_release: root.do_login(user.text, pwd.text)
+            StyledButton:
+                text: 'Register'
+                on_release: app.goto('register')

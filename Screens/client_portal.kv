@@ -1,0 +1,37 @@
+<ClientPortalScreen>:
+    name: 'client_portal'
+    BoxLayout:
+        orientation: 'vertical'
+        HeaderBar:
+            Image:
+                source: app.icon_path('client')
+                size_hint_x: None
+                width: dp(40)
+            Label:
+                text: 'Client Portal'
+                color: app.text_color
+                font_size: app.fs_lg
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(20)
+            spacing: dp(12)
+            StyledCard:
+                Label:
+                    text: 'Request orders and view pickup info.'
+                    color: app.text_color
+            ScrollView:
+                do_scroll_x: False
+                GridLayout:
+                    id: client_actions
+                    cols: 1
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(8)
+            BoxLayout:
+                size_hint_y: None
+                height: dp(48)
+                StyledButton:
+                    text: 'Request Order'
+                StyledButton:
+                    text: 'Back'
+                    on_release: app.goto('dashboard')
