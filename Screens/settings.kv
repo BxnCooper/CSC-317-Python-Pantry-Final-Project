@@ -1,0 +1,38 @@
+<SettingsScreen>:
+    name: 'settings'
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+        BoxLayout:
+            Label:
+                text: 'Settings'
+                font_size: app.fs_xl
+                color: app.text_color
+        BoxLayout:
+            size_hint_y: None
+            height: '40dp'
+            StyledButton:
+                text: 'Light'
+                on_release: root.toggle_dark(False)
+            StyledButton:
+                text: 'Dark'
+                on_release: root.toggle_dark(True)
+        Label:
+            text: 'Font size'
+            color: app.text_color
+        BoxLayout:
+            size_hint_y: None
+            height: '40dp'
+            StyledButton:
+                text: 'Small'
+                on_release: root.set_font('Small')
+            StyledButton:
+                text: 'Medium'
+                on_release: root.set_font('Medium')
+            StyledButton:
+                text: 'Large'
+                on_release: root.set_font('Large')
+        StyledButton:
+            text: 'Back'
+            on_release: app.goto('dashboard')
