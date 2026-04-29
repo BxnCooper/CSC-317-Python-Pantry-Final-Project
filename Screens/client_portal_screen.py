@@ -13,7 +13,7 @@ class ClientPortalScreen(Screen):
         # Show current inventory as available items to request
         items = []
         try:
-            inv = app.backend.get('inventory_service')
+            inv = app.inventory
             if inv:
                 items = inv.list_items()
         except Exception:

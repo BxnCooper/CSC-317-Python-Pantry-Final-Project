@@ -7,6 +7,9 @@ from kivy.uix.button import Button
 import base64
 from kivy.app import App
 from kivy.lang import Builder
+from Backend.inventory_service import InventoryManagement
+from Backend.auth_service import AuthService
+from Backend.database import Database
 
 BASE_DIR = os.path.dirname(__file__)
 
@@ -23,6 +26,10 @@ class PantryApp(App):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         ensure_backend_package()
+
+        self.inventory = InventoryManagement()
+        self.auth = AuthService()
+        self.db = Database()
 
         # load backend modules
         names = ["database", "auth_service", "inventory_service"]

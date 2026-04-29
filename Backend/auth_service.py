@@ -1,15 +1,19 @@
-from backend.database import add_user, check_user
+from Backend.database import Database
 
 
-def login(username, password):
-    ok = check_user(username, password)
-    if ok:
-        return True, {"username": username}
-    return False, "Invalid credentials"
+class AuthService():
+    def __init__(self):
+        self.db = Database()
+        
+    def login(self,username, password):
+        ok = self.db.check_user(username, password)
+        if ok:
+            return True, {"username": username}
+        return False, "Invalid credentials"
 
 
-def register(username, password):
-    ok = add_user(username, password)
-    if ok:
-        return True, {"username": username}
-    return False, "User exists"
+    def register(self, username, password):
+        ok = self.db.add_user(username, password)
+        if ok:
+            return True, {"username": username}
+        return False, "User exists"
