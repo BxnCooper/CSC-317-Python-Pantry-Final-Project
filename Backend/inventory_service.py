@@ -1,8 +1,17 @@
 from Backend.database import list_inventory, get_item, remove_item as db_remove_item, add_item as db_add_item, change_stock as db_change_stock
-
+from Backend.database import list_inventory_name, list_inventory_allergen, list_inventory_stock
 
 def list_items():
     return list_inventory()
+
+def list_items_by_name():
+    return list_inventory_name()
+    
+def list_items_by_stock():
+    return list_inventory_stock()
+    
+def list_items_by_allergens():
+    return list_inventory_allergen()
 
 def get_id(name: str):
     return get_item(name)
