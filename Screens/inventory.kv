@@ -1,8 +1,12 @@
+#:kivy 1.0
+
 <InventoryScreen>:
     name: 'inventory'
     BoxLayout:
         orientation: 'vertical'
         HeaderBar:
+            size_hint: (1, None)
+            height: '50dp'
             Label:
                 text: 'Inventory'
                 color: app.text_color
@@ -15,6 +19,79 @@
                 size_hint_y: None
                 height: self.minimum_height
                 spacing: dp(8)
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: (1, None)
+            height: '175dp'
+            spacing: dp(5)
+            padding: dp(20)
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: (1, None)
+                height: '50dp'
+                spacing: dp(20)
+
+                StyledButton:
+                    text: "Add New Item"
+                    on_release: root.screen_add_item()
+
+                TextInput:
+                    id: add_name_input
+                    hint_text: "Enter Item Name"
+                    size_hint: (1, None)
+                    height: '40dp'
+                
+                TextInput:
+                    id: add_stock_input
+                    hint_text: "Enter Item Stock"
+                    size_hint: (1, None)
+                    height: '40dp'
+
+                TextInput:
+                    id: add_allergens_input
+                    hint_text: "Enter Item Allergens (or None)"
+                    size_hint: (1, None)
+                    height: '40dp'
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: (1, None)
+                height: '50dp'
+                spacing: dp(20)
+
+                StyledButton:
+                    text: "Remove Item"
+                    on_release: root.screen_remove_item()
+
+                TextInput:
+                    id: remove_name_input
+                    hint_text: "Enter Item Name"
+                    size_hint: (1, None)
+                    height: '40dp'
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: (1, None)
+                height: '50dp'
+                spacing: dp(20)
+
+                StyledButton:
+                    text: "Edit Item Stock"
+                    on_release: root.screen_edit_item()
+
+                TextInput:
+                    id: edit_name_input
+                    hint_text: "Enter Item Name"
+                    size_hint: (1, None)
+                    height: '40dp'
+
+                TextInput:
+                    id: edit_stock_input
+                    hint_text: "Enter Change In Stock (+/-)"
+                    size_hint: (1, None)
+                    height: '40dp'
+
         BoxLayout:
             size_hint_y: None
             height: dp(48)

@@ -1,8 +1,12 @@
+#:kivy 1.0
+
 <DashboardScreen>:
     name: 'dashboard'
     BoxLayout:
         orientation: 'vertical'
         HeaderBar:
+            size_hint: (1, None)
+            height: '50dp'
             Label:
                 text: 'Python Pantry'
                 color: app.text_color

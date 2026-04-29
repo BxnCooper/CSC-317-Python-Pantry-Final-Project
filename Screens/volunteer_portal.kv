@@ -1,8 +1,12 @@
+#:kivy 1.0
+
 <VolunteerPortalScreen>:
     name: 'volunteer_portal'
     BoxLayout:
         orientation: 'vertical'
         HeaderBar:
+            size_hint: (1, None)
+            height: '50dp'
             Image:
                 source: app.icon_path('volunteer')
                 size_hint_x: None
