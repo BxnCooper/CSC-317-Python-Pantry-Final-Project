@@ -18,7 +18,7 @@ class DonorManagementScreen(Screen):
 
         donors = []
         try:
-            db = app.backend.get('database')
+            db = app.db
             if db:
                 donors = db.read_all().get('donors', [])
         except Exception:

@@ -1,13 +1,14 @@
 from kivy.uix.screenmanager import Screen
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
+from kivy.app import App
 
 class InventoryScreen(Screen):
     current_sort = "id"
     
     def on_pre_enter(self):
-        app = self.manager.app
-        items = app.backend.get("inventory_service").list_items()
+        app = App.get_running_app()
+        items = app.inventory.list_items()
         self.ids.inv_list.clear_widgets()
         
         label_box = b = BoxLayout(size_hint_y=None, height=48)
@@ -24,7 +25,8 @@ class InventoryScreen(Screen):
             self.ids.inv_list.add_widget(b)
     
     def refresh(self):
-        app = self.manager.app
+        app = App.get_running_app()
+        items = app.inventory.list_items()
         self.ids.inv_list.clear_widgets()
         
         label_box = b = BoxLayout(size_hint_y=None, height=48)
@@ -35,13 +37,13 @@ class InventoryScreen(Screen):
         
         match self.current_sort:
             case "id":
-                items = app.backend.get("inventory_service").list_items()
+                items = app.inventory.list_items()
             case "name":
-                items = app.backend.get("inventory_service").list_items_by_name()
+                items = app.inventory.list_items_by_name()
             case "allergens":
-                items = app.backend.get("inventory_service").list_items_by_allergens()
+                items = app.inventory.list_items_by_allergens()
             case "stock":
-                items = app.backend.get("inventory_service").list_items_by_stock()
+                items = app.inventory.list_items_by_stock()
                 
         for it in items:
             b = BoxLayout(size_hint_y=None, height=48)
@@ -51,13 +53,13 @@ class InventoryScreen(Screen):
             self.ids.inv_list.add_widget(b)
             
     def screen_add_item(self):
-        app = self.manager.app
+        app = App.get_running_app()
         
         try:
             name = self.ids.add_name_input.text
             stock = int(self.ids.add_stock_input.text)
             allergens = self.ids.add_allergens_input.text
-            app.backend.get("inventory_service").add_item(name, stock, allergens)
+            app.inventory.add_item(name, stock, allergens)
             self.refresh()
             return True
             
@@ -66,11 +68,11 @@ class InventoryScreen(Screen):
             return False
         
     def screen_remove_item(self):
-        app = self.manager.app
+        app = App.get_running_app()
         
         try:
             name = self.ids.remove_name_input.text 
-            app.backend.get('inventory_service').remove_item(name)
+            app.inventory.remove_item(name)
             self.refresh()
             return True
             
@@ -80,12 +82,12 @@ class InventoryScreen(Screen):
             
         
     def screen_edit_item(self):
-        app = self.manager.app
+        app = App.get_running_app()
         
         try:
             name = self.ids.edit_name_input.text 
             change_in_stock = self.ids.edit_stock_input.text 
-            app.backend.get("inventory_service").change_stock(name, change_in_stock)
+            app.inventory.change_stock(name, change_in_stock)
             self.refresh()
             return True
         
