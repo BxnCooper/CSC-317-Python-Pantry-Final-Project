@@ -45,6 +45,29 @@ def init_db():
         )
         """
     )
+    # volunteers table: shifts/opportunities
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS volunteers (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            info TEXT,
+            slots INTEGER DEFAULT 1
+        )
+        """
+    )
+
+    # signups table: which username signed up for which shift
+    cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS signups (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT,
+            shift_id INTEGER,
+            UNIQUE(username, shift_id)
+        )
+        """
+    )
 
     # Seed inventory if empty
     cur.execute("SELECT COUNT(1) as c FROM inventory")
@@ -55,6 +78,17 @@ def init_db():
             ("Canned Corn", 20, "None"),
         ]
         cur.executemany("INSERT INTO inventory (name, stock, allergens) VALUES (?,?,?)", defaults)
+
+    # Seed volunteers with placeholder schedule dates if empty
+    cur.execute("SELECT COUNT(1) as c FROM volunteers")
+    if cur.fetchone()[0] == 0:
+        # info field includes time and a placeholder date
+        v_defaults = [
+            ("Morning Shift - Mon", "8am-11am | 2026-05-04", 3),
+            ("Afternoon Shift - Wed", "1pm-4pm | 2026-05-06", 2),
+            ("Evening Shift - Fri", "5pm-8pm | 2026-05-08", 2),
+        ]
+        cur.executemany("INSERT INTO volunteers (name, info, slots) VALUES (?,?,?)", v_defaults)
 
     conn.commit()
     conn.close()
@@ -74,8 +108,11 @@ def read_all() -> Dict[str, Any]:
     cur.execute("SELECT id, name, info FROM donors ORDER BY id")
     donors = [ {"id": row[0], "name": row[1], "info": row[2]} for row in cur.fetchall() ]
 
+    cur.execute("SELECT id, name, info, slots FROM volunteers ORDER BY id")
+    volunteers = [ {"id": row[0], "name": row[1], "info": row[2], "slots": row[3]} for row in cur.fetchall() ]
+
     conn.close()
-    return {"users": users, "inventory": inventory, "donors": donors}
+    return {"users": users, "inventory": inventory, "donors": donors, "volunteers": volunteers}
 
 
 def write_all(data: Dict[str, Any]):
@@ -141,6 +178,93 @@ def list_inventory() -> List[Dict[str, Any]]:
     res = [ {"id": r[0], "name": r[1], "stock": r[2],  "allergens": r[3]} for r in cur.fetchall() ]
     conn.close()
     return res
+
+def list_volunteers() -> List[Dict[str, Any]]:
+    """Return all volunteer shifts/opportunities."""
+    init_db()
+    conn = _get_conn()
+    cur = conn.cursor()
+    cur.execute("SELECT id, name, info, slots FROM volunteers ORDER BY id")
+    res = [ {"id": r[0], "name": r[1], "info": r[2], "slots": r[3]} for r in cur.fetchall() ]
+    conn.close()
+    return res
+
+def add_volunteer(name: str, info: str, slots: int = 1):
+    init_db()
+    conn = _get_conn()
+    cur = conn.cursor()
+    try:
+        cur.execute("INSERT INTO volunteers (name, info, slots) VALUES (?,?,?)", (name, info, int(slots)))
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        print(str(e))
+        return False
+
+def list_shift_signups(shift_id: int) -> List[str]:
+    init_db()
+    conn = _get_conn()
+    cur = conn.cursor()
+    cur.execute("SELECT username FROM signups WHERE shift_id = ?", (shift_id,))
+    res = [ r[0] for r in cur.fetchall() ]
+    conn.close()
+    return res
+
+def list_user_signups(username: str) -> List[int]:
+    init_db()
+    conn = _get_conn()
+    cur = conn.cursor()
+    cur.execute("SELECT shift_id FROM signups WHERE username = ?", (username,))
+    res = [ r[0] for r in cur.fetchall() ]
+    conn.close()
+    return res
+
+def sign_up(username: str, shift_id: int):
+    """Attempt to sign a user up for a shift. Returns (True, '') on success or (False, reason)."""
+    init_db()
+    conn = _get_conn()
+    cur = conn.cursor()
+    try:
+        # check shift exists and slot availability
+        cur.execute("SELECT slots FROM volunteers WHERE id = ?", (shift_id,))
+        row = cur.fetchone()
+        if not row:
+            conn.close()
+            return False, "Shift not found"
+        slots = row[0]
+        cur.execute("SELECT COUNT(1) FROM signups WHERE shift_id = ?", (shift_id,))
+        used = cur.fetchone()[0]
+        if used >= slots:
+            conn.close()
+            return False, "No slots available"
+        # try insert
+        cur.execute("INSERT OR IGNORE INTO signups (username, shift_id) VALUES (?,?)", (username, shift_id))
+        conn.commit()
+        # verify inserted
+        cur.execute("SELECT COUNT(1) FROM signups WHERE username = ? AND shift_id = ?", (username, shift_id))
+        ok = cur.fetchone()[0] > 0
+        conn.close()
+        if ok:
+            return True, ""
+        return False, "Already signed up"
+    except Exception as e:
+        conn.close()
+        return False, str(e)
+
+def cancel_signup(username: str, shift_id: int):
+    init_db()
+    conn = _get_conn()
+    cur = conn.cursor()
+    try:
+        cur.execute("DELETE FROM signups WHERE username = ? AND shift_id = ?", (username, shift_id))
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        conn.close()
+        print(str(e))
+        return False
 
 def list_inventory_name() -> List[Dict[str, Any]]:
     init_db()
