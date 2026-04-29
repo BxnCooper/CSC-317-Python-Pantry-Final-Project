@@ -3,6 +3,8 @@ from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 
 class InventoryScreen(Screen):
+    current_sort = "id"
+    
     def on_pre_enter(self):
         app = self.manager.app
         items = app.backend.get("inventory_service").list_items()
@@ -23,7 +25,6 @@ class InventoryScreen(Screen):
     
     def refresh(self):
         app = self.manager.app
-        items = app.backend.get("inventory_service").list_items()
         self.ids.inv_list.clear_widgets()
         
         label_box = b = BoxLayout(size_hint_y=None, height=48)
@@ -32,6 +33,16 @@ class InventoryScreen(Screen):
         label_box.add_widget(Label(text="Stock", color=app.text_color, size_hint_x=None, width=80))
         self.ids.inv_list.add_widget(label_box)
         
+        match self.current_sort:
+            case "id":
+                items = app.backend.get("inventory_service").list_items()
+            case "name":
+                items = app.backend.get("inventory_service").list_items_by_name()
+            case "allergens":
+                items = app.backend.get("inventory_service").list_items_by_allergens()
+            case "stock":
+                items = app.backend.get("inventory_service").list_items_by_stock()
+                
         for it in items:
             b = BoxLayout(size_hint_y=None, height=48)
             b.add_widget(Label(text=it.get('name'), color=app.text_color))
@@ -81,3 +92,19 @@ class InventoryScreen(Screen):
         except Exception as e:
             print(str(e))
             return False
+
+    def set_sort_id(self):
+        self.current_sort = "id"
+        self.refresh()
+
+    def set_sort_name(self):
+        self.current_sort = "name"
+        self.refresh()
+        
+    def set_sort_allergens(self):
+        self.current_sort = "allergens"
+        self.refresh()
+        
+    def set_sort_stock(self):
+        self.current_sort = "stock"
+        self.refresh()

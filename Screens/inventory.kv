@@ -11,6 +11,35 @@
                 text: 'Inventory'
                 color: app.text_color
                 font_size: app.fs_lg
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: (1, None)
+            padding: dp(10)
+            spacing: dp(5)
+
+            Label:
+                text: "Sort By:"
+                color: app.text_color
+                font_size: app.fs_lg
+            
+            StyledButton:
+                text: 'ID'
+                on_press: root.set_sort_id()
+
+            StyledButton:
+                text: 'Name'
+                on_press: root.set_sort_name()
+                
+            StyledButton:
+                text: 'Allergens'
+                on_press: root.set_sort_allergens()
+
+            StyledButton:
+                text: 'Stock'
+                on_press: root.set_sort_stock()
+
+        
         ScrollView:
             do_scroll_x: False
             GridLayout:
