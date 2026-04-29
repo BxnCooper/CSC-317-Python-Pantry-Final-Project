@@ -1,8 +1,12 @@
+#:kivy 1.0
+
 <ClientPortalScreen>:
     name: 'client_portal'
     BoxLayout:
         orientation: 'vertical'
         HeaderBar:
+            size_hint: (1, None)
+            height: '50dp'
             Image:
                 source: app.icon_path('client')
                 size_hint_x: None

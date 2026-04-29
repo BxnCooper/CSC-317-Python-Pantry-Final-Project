@@ -30,7 +30,8 @@ def init_db():
         CREATE TABLE IF NOT EXISTS inventory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            stock INTEGER NOT NULL DEFAULT 0
+            stock INTEGER NOT NULL DEFAULT 0,
+            allergens TEXT NOT NULL DEFAULT 'None'
         )
         """
     )
@@ -49,11 +50,11 @@ def init_db():
     cur.execute("SELECT COUNT(1) as c FROM inventory")
     if cur.fetchone()[0] == 0:
         defaults = [
-            ("Rice", 50),
-            ("Beans", 30),
-            ("Canned Corn", 20),
+            ("Rice", 50, "None"),
+            ("Beans", 30, "None"),
+            ("Canned Corn", 20, "None"),
         ]
-        cur.executemany("INSERT INTO inventory (name, stock) VALUES (?,?)", defaults)
+        cur.executemany("INSERT INTO inventory (name, stock, allergens) VALUES (?,?,?)", defaults)
 
     conn.commit()
     conn.close()
@@ -68,7 +69,7 @@ def read_all() -> Dict[str, Any]:
     users = [ {"username": row[0]} for row in cur.fetchall() ]
 
     cur.execute("SELECT id, name, stock FROM inventory ORDER BY id")
-    inventory = [ {"id": row[0], "name": row[1], "stock": row[2]} for row in cur.fetchall() ]
+    inventory = [ {"id": row[0], "name": row[1], "stock": row[2], "allergens": row[3]} for row in cur.fetchall() ]
 
     cur.execute("SELECT id, name, info FROM donors ORDER BY id")
     donors = [ {"id": row[0], "name": row[1], "info": row[2]} for row in cur.fetchall() ]
@@ -95,7 +96,7 @@ def write_all(data: Dict[str, Any]):
     # Replace inventory
     cur.execute("DELETE FROM inventory")
     for it in data.get("inventory", []):
-        cur.execute("INSERT INTO inventory (id, name, stock) VALUES (?,?,?)", (it.get("id"), it.get("name"), it.get("stock")))
+        cur.execute("INSERT INTO inventory (id, name, stock, allergens) VALUES (?,?,?,?)", (it.get("id"), it.get("name"), it.get("stock"), it.get("allergens")))
 
     # Replace donors
     cur.execute("DELETE FROM donors")
@@ -136,11 +137,37 @@ def list_inventory() -> List[Dict[str, Any]]:
     init_db()
     conn = _get_conn()
     cur = conn.cursor()
-    cur.execute("SELECT id, name, stock FROM inventory ORDER BY id")
-    res = [ {"id": r[0], "name": r[1], "stock": r[2]} for r in cur.fetchall() ]
+    cur.execute("SELECT * FROM inventory ORDER BY id")
+    res = [ {"id": r[0], "name": r[1], "stock": r[2],  "allergens": r[3]} for r in cur.fetchall() ]
     conn.close()
     return res
 
+def list_inventory_name() -> List[Dict[str, Any]]:
+    init_db()
+    conn = _get_conn()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM inventory ORDER BY name")
+    res = [ {"id": r[0], "name": r[1], "stock": r[2], "allergens": r[3]} for r in cur.fetchall() ]
+    conn.close()
+    return res
+
+def list_inventory_stock() -> List[Dict[str, Any]]:
+    init_db()
+    conn = _get_conn()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM inventory ORDER BY stock")
+    res = [ {"id": r[0], "name": r[1], "stock": r[2], "allergens": r[3]} for r in cur.fetchall() ]
+    conn.close()
+    return res
+
+def list_inventory_allergen() -> List[Dict[str, Any]]:
+    init_db()
+    conn = _get_conn()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM inventory ORDER BY stock")
+    res = [ {"id": r[0], "name": r[1], "stock": r[2], "allergens": r[3]} for r in cur.fetchall() ]
+    conn.close()
+    return res
 
 def change_stock(item_id: int, delta: int):
     init_db()
@@ -154,8 +181,63 @@ def change_stock(item_id: int, delta: int):
     new = max(0, row[0] + int(delta))
     cur.execute("UPDATE inventory SET stock = ? WHERE id = ?", (new, item_id))
     conn.commit()
-    cur.execute("SELECT id, name, stock FROM inventory WHERE id = ?", (item_id,))
+    cur.execute("SELECT * FROM inventory WHERE id = ?", (item_id,))
     r = cur.fetchone()
     conn.close()
-    return True, {"id": r[0], "name": r[1], "stock": r[2]}
+    return True, {"id": r[0], "name": r[1], "stock": r[2], "allergens": r[3]}
 
+
+def get_item(name: str):
+    init_db()
+    conn = _get_conn()
+    cur = conn.cursor()
+    
+    try:
+        cur.execute("SELECT id FROM inventory WHERE name = ?", (name,))
+        id = cur.fetchone()[0]
+        return id
+    
+    except Exception as e:
+        return str(e)
+
+
+def add_item(name: str, stock: int, allergens: str):
+    init_db()
+    conn = _get_conn()
+    cur = conn.cursor()
+    
+    try:
+        new_item = (name, stock, allergens)
+        cur.execute("INSERT INTO inventory (name, stock, allergens) VALUES (?,?,?)", new_item)
+        conn.commit()
+        conn.close()
+        return True
+    
+    except Exception as e:
+        print(str(e))
+        return False
+    
+    
+def remove_item(id: int):
+    init_db()
+    conn = _get_conn()
+    cur = conn.cursor()
+    
+    try:
+        cur.execute("SELECT * FROM inventory WHERE id = ?", (id,))
+        row = cur.fetchone()
+        
+        if not row:
+            conn.close()
+            return "Item with that ID does not exist."
+        
+        else:
+            cur.execute("DELETE FROM inventory WHERE id = ?", (id,))
+            conn.commit()
+            conn.close()
+            return True
+        
+    except Exception as e:
+        print(str(e))
+        return False
+    

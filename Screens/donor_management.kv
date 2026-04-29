@@ -1,8 +1,12 @@
+#:kivy 1.0
+
 <DonorManagementScreen>:
     name: 'donor_management'
     BoxLayout:
         orientation: 'vertical'
         HeaderBar:
+            size_hint: (1, None)
+            height: '50dp'
             Image:
                 source: app.icon_path('donors')
                 size_hint_x: None

@@ -1,3 +1,5 @@
+#:kivy 1.0
+
 <SettingsScreen>:
     name: 'settings'
     BoxLayout:
@@ -5,6 +7,8 @@
         padding: 20
         spacing: 10
         BoxLayout:
+            size_hint: (1, None)
+            height: '50dp'
             Label:
                 text: 'Settings'
                 font_size: app.fs_xl
