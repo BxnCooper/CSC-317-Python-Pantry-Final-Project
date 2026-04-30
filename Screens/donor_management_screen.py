@@ -10,6 +10,15 @@ class DonorManagementScreen(Screen):
         If no donors exist, show a friendly message.
         """
         app = App.get_running_app()
+        
+        user = getattr(app, 'current_user', None)
+        username = None
+        if isinstance(user, dict):
+            username = user.get('username')
+        
+        app.refresh_theme(username)
+        
+        
         container = self.ids.get('donor_list')
         if not container:
             return
@@ -42,3 +51,13 @@ class DonorManagementScreen(Screen):
                 container.add_widget(card)
             else:
                 container.add_widget(Label(text=f"{d.get('name')}: {d.get('info')}", color=app.text_color, size_hint_y=None, height=40))
+
+    def on_enter(self, *args):
+        app = App.get_running_app()
+        
+        user = getattr(app, 'current_user', None)
+        username = None
+        if isinstance(user, dict):
+            username = user.get('username')
+        
+        app.refresh_theme(username)

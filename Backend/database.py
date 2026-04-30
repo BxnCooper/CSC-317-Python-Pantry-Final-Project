@@ -370,3 +370,77 @@ class Database():
         except Exception as e:
             print(str(e))
             return False
+        
+        
+    def update_user_theme(self, username: str, dark: bool):
+        self.init_db()
+        conn = self._get_conn()
+        cur = conn.cursor()
+        
+        try:
+            cur.execute("UPDATE users SET dark = ? WHERE username = ?", (dark, username,))
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            #print(str(e))
+            return False
+    
+    def get_user_theme(self, username: str):
+        self.init_db()
+        conn = self._get_conn()
+        cur = conn.cursor()
+        
+        try:
+            cur.execute("SELECT dark FROM users WHERE username = ?", (username,))
+            row = cur.fetchone()
+            dark = row[0]
+            conn.commit()
+            conn.close()
+            
+            return dark
+        except Exception as e:
+            print(str(e))
+            return False
+    
+    def update_user_font(self, username: str, size_name: str):
+        self.init_db()
+        conn = self._get_conn()
+        cur = conn.cursor()
+        
+        try:
+            cur.execute("UPDATE users SET font_size = ? WHERE username = ?", (size_name, username,))
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            print(str(e))
+            return False
+    
+    def get_user_font(self, username: str):
+        self.init_db()
+        conn = self._get_conn()
+        cur = conn.cursor()
+        
+        try:
+            cur.execute("SELECT font_size FROM users WHERE username = ?", (username,))
+            row = cur.fetchone()
+            font_size = row[0]
+            conn.commit()
+            conn.close()
+            
+            return font_size
+        except Exception as e:
+            #print(str(e))
+            return -1
+    
+    def update_user_allergens(self):
+        pass
+    
+    def get_user_allergens(self, username: str):
+        pass
+    
+if __name__ == '__main__':
+    test_db = Database()
+    test_db.update_user_theme("test", False)
+    test_db.update_user_font("test", "Medium")
+    
+    print(test_db.get_user_font("test"))

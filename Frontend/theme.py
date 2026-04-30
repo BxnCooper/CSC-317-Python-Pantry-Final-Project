@@ -25,4 +25,5 @@ def get_font_sizes(size_name="Medium"):
         "Medium": {"sm": 13, "md": 16, "lg": 20, "xl": 26},
         "Large": {"sm": 14, "md": 18, "lg": 22, "xl": 30},
     }
-    return sizes.get(size_name, sizes[size_name])
+    
+    return sizes.get(size_name, sizes["Medium"])

@@ -8,6 +8,15 @@ class InventoryScreen(Screen):
     
     def on_pre_enter(self):
         app = App.get_running_app()
+        
+        user = getattr(app, 'current_user', None)
+        username = None
+        if isinstance(user, dict):
+            username = user.get('username')
+        
+        app.refresh_theme(username)
+        
+        
         items = app.inventory.list_items()
         self.ids.inv_list.clear_widgets()
         
@@ -23,6 +32,16 @@ class InventoryScreen(Screen):
             b.add_widget(Label(text=it.get('allergens'), color=app.text_color))
             b.add_widget(Label(text=str(it.get('stock')), color=app.text_color, size_hint_x=None, width=80))
             self.ids.inv_list.add_widget(b)
+    
+    def on_enter(self, *args):
+        app = App.get_running_app()
+        
+        user = getattr(app, 'current_user', None)
+        username = None
+        if isinstance(user, dict):
+            username = user.get('username')
+        
+        app.refresh_theme(username)
     
     def refresh(self):
         app = App.get_running_app()
