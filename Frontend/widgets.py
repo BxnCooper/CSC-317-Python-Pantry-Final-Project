@@ -18,7 +18,7 @@ def _set_bg(widget, color):
         widget._bg_rect.size = widget.size
     widget.bind(pos=_upd, size=_upd)
 
-
+# card widget 
 class Card(BoxLayout):
     title = StringProperty("")
 
@@ -36,7 +36,7 @@ class Card(BoxLayout):
 class CardLabel(Label):
     pass
 
-
+# card widget for the donor screen
 class DonorCard(BoxLayout):
     name = StringProperty("")
     info = StringProperty("")
@@ -51,36 +51,7 @@ class DonorCard(BoxLayout):
             except Exception:
                 pass
 
-
-class InventoryRow(BoxLayout):
-    item_id = NumericProperty(0)
-    name = StringProperty("")
-    stock = NumericProperty(0)
-    change_callback = ObjectProperty(None)
-
-    def increase(self):
-        try:
-            app = App.get_running_app()
-            ok, res = app.backend.get("inventory_service").change_stock(self.item_id, 1)
-            if ok:
-                self.stock = res.get("stock", self.stock)
-                if callable(self.change_callback):
-                    self.change_callback()
-        except Exception as e:
-            print("Inventory increase failed:", e)
-
-    def decrease(self):
-        try:
-            app = App.get_running_app()
-            ok, res = app.backend.get("inventory_service").change_stock(self.item_id, -1)
-            if ok:
-                self.stock = res.get("stock", self.stock)
-                if callable(self.change_callback):
-                    self.change_callback()
-        except Exception as e:
-            print("Inventory decrease failed:", e)
-
-
+# header object that is on every screen
 class HeaderBar(BoxLayout):
     title = StringProperty('Pantry')
 
@@ -93,7 +64,7 @@ class HeaderBar(BoxLayout):
         except Exception:
             pass
 
-
+# styled card widget that is on some screens
 class StyledCard(BoxLayout):
     title = StringProperty("")
 

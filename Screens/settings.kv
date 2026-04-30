@@ -4,13 +4,16 @@
     name: 'settings'
     BoxLayout:
         orientation: 'vertical'
+        # header
         HeaderBar:
             size_hint: (1, None)
             height: '50dp'
             Label:
+                id: label_txt
                 text: 'Settings'
                 font_size: app.fs_xl
                 color: app.text_color
+        # boylayout for the theme selections and label
         BoxLayout:
             orientation: 'vertical'
             size_hint: (1, None)
@@ -33,6 +36,7 @@
                 StyledButton:
                     text: 'Dark'
                     on_release: root.toggle_dark(True)
+        # boxlayout for the font size buttons and label
         BoxLayout:
             orientation: 'vertical'
             size_hint: (1, None)
@@ -59,6 +63,7 @@
         # this label is just for padding
         Label:
             text: ''
+        # boxlayout for the reset user preferences button and label
         BoxLayout:
             orientation: 'vertical'
             size_hint: (1, None)
@@ -85,6 +90,7 @@
         # this label is just for padding
         Label:
             text: ''
+        # boxlayout for the back button
         BoxLayout:
             orientation: 'vertical'
             padding: dp(20)

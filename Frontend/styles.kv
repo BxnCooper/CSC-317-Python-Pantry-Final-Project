@@ -1,6 +1,7 @@
 #:kivy 1.0
 #:import dp kivy.metrics.dp
 
+# styled rounded button that is used throughout the app
 <StyledButton@Button>:
     size_hint_y: None
     height: dp(40)
@@ -8,10 +9,12 @@
     background_color: (0,0,0,0)
     canvas.before:
         Color:
+            # sets the color to be the primary app color which changes with theme
             rgba: app.primary if hasattr(app, 'primary') else (0.06,0.53,0.86,1)
         RoundedRectangle:
             pos: self.pos
             size: self.size
             radius: [8]
+    # color is based on user theme and font size is based on user preference
     color: app.text_color
     font_size: app.fs_md
