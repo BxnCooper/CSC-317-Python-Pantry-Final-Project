@@ -4,6 +4,7 @@
     name: 'login'
     BoxLayout:
         orientation: 'vertical'
+        # header
         HeaderBar:
             size_hint: (1, None)
             height: '50dp'
@@ -15,15 +16,18 @@
                 text: 'Python Pantry'
                 color: app.text_color
                 font_size: app.fs_lg
+        # boxlayout for the other login screen widgets
         BoxLayout:
             orientation: 'vertical'
             padding: dp(20)
             spacing: dp(12)
+            # styledcard for the welcome back text
             StyledCard:
                 Label:
                     text: 'Welcome back'
                     font_size: app.fs_lg
                     color: app.text_color
+            # boxlayout for the username and password textboxes
             BoxLayout:
                 size_hint_y: None
                 height: dp(40)
@@ -33,6 +37,7 @@
                 TextInput:
                     id: pwd
                     hint_text: 'password'
+            # buttons for the login function and register screen
             StyledButton:
                 text: 'Login'
                 on_release: root.do_login(user.text, pwd.text)

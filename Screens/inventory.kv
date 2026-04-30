@@ -4,6 +4,7 @@
     name: 'inventory'
     BoxLayout:
         orientation: 'vertical'
+        # header
         HeaderBar:
             size_hint: (1, None)
             height: '50dp'
@@ -12,6 +13,7 @@
                 color: app.text_color
                 font_size: app.fs_lg
 
+        # boxlayout for the sorting options
         BoxLayout:
             orientation: 'horizontal'
             size_hint: (1, None)
@@ -23,23 +25,27 @@
                 color: app.text_color
                 font_size: app.fs_lg
             
+            # sort by ID button
             StyledButton:
                 text: 'ID'
                 on_press: root.set_sort_id()
 
+            # sort by name button
             StyledButton:
                 text: 'Name'
                 on_press: root.set_sort_name()
                 
+            # sort by allergens button
             StyledButton:
                 text: 'Allergens'
                 on_press: root.set_sort_allergens()
 
+            # sort by stock button
             StyledButton:
                 text: 'Stock'
                 on_press: root.set_sort_stock()
 
-        
+        # scroll view called inv_list that displays all of the inventory items
         ScrollView:
             do_scroll_x: False
             GridLayout:
@@ -48,6 +54,8 @@
                 size_hint_y: None
                 height: self.minimum_height
                 spacing: dp(8)
+        
+        # boxlayout for the adding, removing, and editing options
         BoxLayout:
             orientation: 'vertical'
             size_hint: (1, None)
@@ -55,6 +63,7 @@
             spacing: dp(5)
             padding: dp(20)
 
+            # boxlayout for the add new item widgets
             BoxLayout:
                 orientation: 'horizontal'
                 size_hint: (1, None)
@@ -83,6 +92,7 @@
                     size_hint: (1, None)
                     height: '40dp'
 
+            # boxlayout for the remove item widgets
             BoxLayout:
                 orientation: 'horizontal'
                 size_hint: (1, None)
@@ -99,6 +109,7 @@
                     size_hint: (1, None)
                     height: '40dp'
 
+            # boxlayout for the edit item widgets
             BoxLayout:
                 orientation: 'horizontal'
                 size_hint: (1, None)
@@ -120,7 +131,8 @@
                     hint_text: "Enter Change In Stock (+/-)"
                     size_hint: (1, None)
                     height: '40dp'
-
+                    
+        # boxlayout for the refreshing and back buttong
         BoxLayout:
             size_hint_y: None
             height: dp(48)

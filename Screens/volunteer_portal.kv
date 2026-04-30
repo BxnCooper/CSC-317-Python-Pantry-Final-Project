@@ -4,6 +4,7 @@
     name: 'volunteer_portal'
     BoxLayout:
         orientation: 'vertical'
+        # header 
         HeaderBar:
             size_hint: (1, None)
             height: '50dp'
@@ -15,14 +16,17 @@
                 text: 'Volunteer Portal'
                 color: app.text_color
                 font_size: app.fs_lg
+        # boxlayout for the rest of the widgets
         BoxLayout:
             orientation: 'vertical'
             padding: dp(20)
             spacing: dp(12)
+            # styledcard for the text
             StyledCard:
                 Label:
                     text: 'Volunteer opportunities and schedules.'
                     color: app.text_color
+            # scrollview that houses the slots that users can volunteer for
             ScrollView:
                 do_scroll_x: False
                 GridLayout:
@@ -31,6 +35,7 @@
                     size_hint_y: None
                     height: self.minimum_height
                     spacing: dp(8)
+            # boxlayout for the back and refresh buttons
             BoxLayout:
                 size_hint_y: None
                 height: dp(48)

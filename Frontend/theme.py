@@ -1,6 +1,8 @@
+# used to get the theme (light/dark mode), defaults to false if odd value is entered
 def get_theme(dark=False):
     # Simple light/dark switch with a friendly palette
     if dark:
+        # values for dark mode
         return {
             "card": (0.13, 0.13, 0.13, 1),
             "text": (0.95, 0.95, 0.95, 1),
@@ -9,6 +11,7 @@ def get_theme(dark=False):
             "bg": (0.07, 0.07, 0.08, 1),
             "surface": (0.12, 0.12, 0.13, 1),
         }
+    # values for light mode
     return {
         "card": (1, 1, 1, 1),
         "text": (0.12, 0.12, 0.12, 1),
@@ -18,7 +21,9 @@ def get_theme(dark=False):
         "surface": (0.98, 0.98, 0.99, 1),
     }
 
-
+# used to get the various font sizes based on user preference
+# varying font sizes used throughout the app to make it look better
+# defaults to returning the Medium values
 def get_font_sizes(size_name="Medium"):
     sizes = {
         "Small": {"sm": 12, "md": 14, "lg": 18, "xl": 22},
