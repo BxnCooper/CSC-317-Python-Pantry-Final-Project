@@ -3,8 +3,40 @@
 <ConfirmScreen>:
     name: 'confirm'
     BoxLayout:
+        orientation: 'vertical'
+        HeaderBar:
+            size_hint: (1, None)
+            height: '50dp'
+            Label:
+                text: 'Confirm Data Deletion'
+                font_size: app.fs_xl
+                color: app.text_color
+        # for spacing
         Label:
-            text: 'Confirm - placeholder'
-        Button:
-            text: 'OK'
+            text: ''
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: (1, None)
+            height: '120dp'
+            padding: dp(20)
+            spacing: dp(10)
+            Label:
+                text: 'Are you sure you want to delete all user data?'
+            Button:
+                background_color: (0, 0, 0 ,0)
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: 1, 0, 0, 1  # red
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [8]
+                text: 'Reset User Data'
+                on_release: root.reset_data()
+        # for spacing
+        Label:
+            text: ''
+        StyledButton:
+            text: 'Back'
             on_release: app.goto('dashboard')
