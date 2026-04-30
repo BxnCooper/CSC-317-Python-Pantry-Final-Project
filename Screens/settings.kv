@@ -4,9 +4,7 @@
     name: 'settings'
     BoxLayout:
         orientation: 'vertical'
-        padding: 20
-        spacing: 10
-        BoxLayout:
+        HeaderBar:
             size_hint: (1, None)
             height: '50dp'
             Label:
@@ -14,30 +12,83 @@
                 font_size: app.fs_xl
                 color: app.text_color
         BoxLayout:
-            size_hint_y: None
-            height: '40dp'
-            StyledButton:
-                text: 'Light'
-                on_release: root.toggle_dark(False)
-            StyledButton:
-                text: 'Dark'
-                on_release: root.toggle_dark(True)
-        Label:
-            text: 'Font size'
-            color: app.text_color
-            font_size: app.fs_lg
+            orientation: 'vertical'
+            size_hint: (1, None)
+            height: '100dp'
+            padding: dp(20)
+            spacing: dp(10)
+            Label:
+                text: 'Theme'
+                font_size: app.fs_lg
+                color: app.text_color
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: '40dp'
+                spacing: dp(20)
+                StyledButton:
+                    text: 'Light'
+                    on_release: root.toggle_dark(False)
+                StyledButton:
+                    text: 'Dark'
+                    on_release: root.toggle_dark(True)
         BoxLayout:
-            size_hint_y: None
-            height: '40dp'
+            orientation: 'vertical'
+            size_hint: (1, None)
+            height: '100dp'
+            padding: dp(20)
+            Label:
+                text: 'Font size'
+                color: app.text_color
+                font_size: app.fs_lg
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_y: None
+                height: '40dp'
+                spacing: dp(10)
+                StyledButton:
+                    text: 'Small'
+                    on_release: root.set_font('Small')
+                StyledButton:
+                    text: 'Medium'
+                    on_release: root.set_font('Medium')
+                StyledButton:
+                    text: 'Large'
+                    on_release: root.set_font('Large')
+        # this label is just for padding
+        Label:
+            text: ''
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: (1, None)
+            height: '120dp'
+            padding: dp(20)
+            spacing: dp(10)
+            Label:
+                text: 'This will reset font, theme, and allergence preferences'
+                font_size: app.fs_lg
+                color: app.text_color
+            Button:
+                background_color: (0, 0, 0 ,0)
+                background_normal: ''
+                height: '40dp'
+                canvas.before:
+                    Color:
+                        rgba: 1, 0, 0, 1  # red
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [8]
+                text: 'Reset User Data'
+                on_release: app.goto('confirm')
+        # this label is just for padding
+        Label:
+            text: ''
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(20)
+            spacing: dp(10)
             StyledButton:
-                text: 'Small'
-                on_release: root.set_font('Small')
-            StyledButton:
-                text: 'Medium'
-                on_release: root.set_font('Medium')
-            StyledButton:
-                text: 'Large'
-                on_release: root.set_font('Large')
-        StyledButton:
-            text: 'Back'
-            on_release: app.goto('dashboard')
+                text: 'Back'
+                on_release: app.goto('dashboard')

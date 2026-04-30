@@ -432,7 +432,7 @@ class Database():
             #print(str(e))
             return -1
     
-    def update_user_allergens(self):
+    def update_user_allergens(self, username: str, update: str):
         pass
     
     def get_user_allergens(self, username: str):
