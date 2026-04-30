@@ -7,6 +7,7 @@ from kivy.uix.button import Button
 import base64
 from kivy.app import App
 from kivy.lang import Builder
+from kivy.properties import NumericProperty
 from Backend.inventory_service import InventoryManagement
 from Backend.auth_service import AuthService
 from Backend.database import Database
@@ -23,13 +24,33 @@ def ensure_backend_package():
 
 
 class PantryApp(App):
+    fs_sm = NumericProperty()
+    fs_md = NumericProperty()
+    fs_lg = NumericProperty()
+    fs_xl = NumericProperty()
+    
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        try:
+            sys.path.insert(0, os.path.join(BASE_DIR, "Frontend"))
+            from theme import get_theme, get_font_sizes
+        except Exception:
+            from Frontend.theme import get_theme, get_font_sizes
+        
+        fonts = get_font_sizes("Medium")
+
+        self.fs_sm = fonts.get("sm")
+        self.fs_md = fonts.get("md")
+        self.fs_lg = fonts.get("lg")
+        self.fs_xl = fonts.get("xl")
+        
         ensure_backend_package()
 
         self.inventory = InventoryManagement()
         self.auth = AuthService()
         self.db = Database()
+        
+        
 
         # load backend modules
         names = ["database", "auth_service", "inventory_service"]
@@ -55,7 +76,7 @@ class PantryApp(App):
         except Exception:
             pass
         # apply defaults via helper so updates later refresh widgets
-        self.apply_theme(dark=self._dark, font_size_name=self._font_size_name)
+        self.refresh_theme(None)
 
     def icon_path(self, name: str) -> str:
         """Return the path to an icon image under assets/icons/<name>.png.
@@ -85,22 +106,24 @@ class PantryApp(App):
                     # best-effort, ignore write errors
                     pass
 
-    def apply_theme(self, dark: bool = False, font_size_name: str = "Medium"):
-        """Apply theme and font sizes at runtime and update common widgets.
-
-        This updates app-level attributes and walks the UI to apply
-        color/font_size to Labels and Buttons so changes are visible
-        immediately.
-        """
-        # import theme helpers from Frontend
+    def refresh_theme(self, username: str):
+        dark = self.db.get_user_theme(username)
+        font_size_name = self.db.get_user_font(username)
+        
+        #print(dark)
+        #print(font_size_name)
+        
         try:
             sys.path.insert(0, os.path.join(BASE_DIR, "Frontend"))
             from theme import get_theme, get_font_sizes
         except Exception:
             from Frontend.theme import get_theme, get_font_sizes
-
+        
         theme = get_theme(dark)
         fonts = get_font_sizes(font_size_name)
+
+        #print(theme)
+        #print(fonts)
 
         self.card = theme.get("card")
         self.text_color = theme.get("text")
@@ -113,7 +136,10 @@ class PantryApp(App):
         self.fs_md = fonts.get("md")
         self.fs_lg = fonts.get("lg")
         self.fs_xl = fonts.get("xl")
+        
+        self.refresh_screen()
 
+    def refresh_screen(self):
         # set window bg
         try:
             from kivy.core.window import Window
@@ -130,12 +156,10 @@ class PantryApp(App):
                     try:
                         if isinstance(w, Label):
                             w.color = self.text_color
-                            w.font_size = self.fs_md
                         if isinstance(w, Button):
                             w.color = self.text_color
-                            w.font_size = self.fs_md
-                    except Exception:
-                        pass
+                    except Exception as e:
+                        print(str(e))
                     for c in getattr(w, "children", [])[:]:
                         _apply(c)
 

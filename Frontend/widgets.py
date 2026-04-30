@@ -3,7 +3,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.properties import StringProperty, NumericProperty, ObjectProperty
 from kivy.app import App
-from kivy.graphics import Color, RoundedRectangle
+from kivy.graphics import Color, Rectangle, RoundedRectangle
 from kivy.metrics import dp
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -12,7 +12,7 @@ from kivy.lang import Builder
 def _set_bg(widget, color):
     with widget.canvas.before:
         Color(*color)
-        widget._bg_rect = RoundedRectangle(pos=widget.pos, size=widget.size, radius=[8])
+        widget._bg_rect = Rectangle(pos=widget.pos, size=widget.size)
     def _upd(instance, value):
         widget._bg_rect.pos = widget.pos
         widget._bg_rect.size = widget.size
@@ -28,7 +28,7 @@ class Card(BoxLayout):
             try:
                 self.padding = dp(12)
                 self.spacing = dp(8)
-                _set_bg(self, app.card)
+                _set_bg(self, app.primary)
             except Exception:
                 pass
 
@@ -102,7 +102,7 @@ class StyledCard(BoxLayout):
         try:
             self.padding = dp(12)
             self.spacing = dp(8)
-            _set_bg(self, app.card)
+            _set_bg(self, app.primary)
         except Exception:
             pass
 

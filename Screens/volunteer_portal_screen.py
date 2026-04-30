@@ -9,6 +9,14 @@ class VolunteerPortalScreen(Screen):
     def on_pre_enter(self):
         """Load volunteer shifts from the backend and display sign-up state."""
         app = App.get_running_app()
+        
+        user = getattr(app, 'current_user', None)
+        username = None
+        if isinstance(user, dict):
+            username = user.get('username')
+        
+        app.refresh_theme(username)
+        
         container = self.ids.get('volunteer_list')
         if not container:
             return
@@ -24,19 +32,14 @@ class VolunteerPortalScreen(Screen):
             container.add_widget(Label(text='No volunteer opportunities', color=app.text_color, size_hint_y=None, height=40))
             return
 
-        user = getattr(app, 'current_user', None)
-        username = None
-        if isinstance(user, dict):
-            username = user.get('username')
-
         for v in volunteers:
             b = BoxLayout(size_hint_y=None, height=64, spacing=8)
 
             # Left column: title (day/shift) on top, time/date underneath
             left = BoxLayout(orientation='vertical')
-            title = Label(text=v.get('name', ''), color=app.text_color, halign='left', valign='middle')
+            title = Label(text=v.get('name', ''), color=app.text_color, font_size=app.fs_lg, halign='left', valign='middle')
             # smaller font for the time/date line
-            info_lbl = Label(text=v.get('info', ''), color=app.text_color, font_size=getattr(app, 'fs_sm', None), halign='left', valign='middle')
+            info_lbl = Label(text=v.get('info', ''), color=app.text_color, font_size=app.fs_sm, halign='left', valign='middle')
             # ensure labels use full width in the vertical box
             title.size_hint_y = None
             title.height = 28
@@ -53,22 +56,32 @@ class VolunteerPortalScreen(Screen):
             except Exception:
                 taken = []
             seats = f"{len(taken)}/{v.get('slots',1)}"
-            b.add_widget(Label(text=seats, color=app.text_color, size_hint_x=None, width=80))
+            b.add_widget(Label(text=seats, color=app.text_color, font_size=app.fs_sm, size_hint_x=None, width=80))
 
             # action button: sign up or cancel
             if username:
                 if username in taken:
-                    btn = Button(text='Cancel', size_hint_x=None, width=96)
+                    btn = Button(text='Cancel', font_size=app.fs_md, size_hint_x=None, width=96)
                     btn.bind(on_release=lambda inst, sid=v.get('id'): self.cancel_signup(sid))
                 else:
-                    btn = Button(text='Sign Up', size_hint_x=None, width=96)
+                    btn = Button(text='Sign Up', font_size=app.fs_md, size_hint_x=None, width=96)
                     btn.bind(on_release=lambda inst, sid=v.get('id'): self.sign_up(sid))
             else:
-                btn = Button(text='Login to sign up', size_hint_x=None, width=140)
+                btn = Button(text='Login to sign up', font_size=app.fs_md, size_hint_x=None, width=140)
                 btn.bind(on_release=lambda *_: app.goto('login'))
 
             b.add_widget(btn)
             container.add_widget(b)
+
+    def on_enter(self, *args):
+        app = App.get_running_app()
+        
+        user = getattr(app, 'current_user', None)
+        username = None
+        if isinstance(user, dict):
+            username = user.get('username')
+        
+        app.refresh_theme(username)
 
     def sign_up(self, shift_id: int):
         app = App.get_running_app()

@@ -5,6 +5,15 @@ from kivy.app import App
 class ClientPortalScreen(Screen):
     def on_pre_enter(self):
         app = App.get_running_app()
+        
+        user = getattr(app, 'current_user', None)
+        username = None
+        if isinstance(user, dict):
+            username = user.get('username')
+        
+        app.refresh_theme(username)
+        
+        
         container = self.ids.get('client_actions')
         if not container:
             return
@@ -31,3 +40,13 @@ class ClientPortalScreen(Screen):
             b.add_widget(Label(text=it.get('name'), color=app.text_color))
             b.add_widget(Label(text=str(it.get('stock')), color=app.text_color, size_hint_x=None, width=80))
             container.add_widget(b)
+
+    def on_enter(self, *args):
+        app = App.get_running_app()
+        
+        user = getattr(app, 'current_user', None)
+        username = None
+        if isinstance(user, dict):
+            username = user.get('username')
+        
+        app.refresh_theme(username)
