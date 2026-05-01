@@ -4,6 +4,7 @@
     name: 'dashboard'
     BoxLayout:
         orientation: 'vertical'
+        # header
         HeaderBar:
             size_hint: (1, None)
             height: '50dp'
@@ -11,33 +12,145 @@
                 text: 'Python Pantry'
                 color: app.text_color
                 font_size: app.fs_lg
+        
+        # box layout for the cards on dashboard
         BoxLayout:
+            orientation: 'horizontal'
             padding: dp(20)
             spacing: dp(12)
+            
+            # styled card for the low stock levels section of the dashboard
             StyledCard:
+                orientation: 'vertical'
                 Label:
-                    text: 'Welcome to the dashboard'
+                    size_hint: (1, None)
+                    height: '40dp'
+                    text: 'Low Stock Level'
+                    font_size: app.fs_xl
+                    bold: True
+
+                # scroll view called inv_list_dash that displays all of the inventory items below 25 stock
+                ScrollView:
+                    do_scroll_x: False
+                    GridLayout:
+                        id: inv_list_dash
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        spacing: dp(8)
+
+            # card for the impact metrics section
+            StyledCard:
+                orientation: 'vertical'
+                Label:
+                    size_hint: (1, None)
+                    height: '40dp'
+                    text: 'Impact Metrics'
+                    font_size: app.fs_xl
+                    bold: True
+
+                # boxlayouts mostly for formatting here
+                BoxLayout:
+                    orientation: 'vertical'
+                    padding: dp(20)
+                    spacing: dp(10)
+                    # each boxlayout contains one of the text sections
+                    BoxLayout:
+                        orientation: 'vertical'
+                        BoxLayout:
+                            orientation: 'vertical'
+                            size_hint: (1, None)
+                            height: '50dp'
+                            Label:
+                                text: '[u]Families Fed Last Week[/u]'
+                                font_size: app.fs_lg
+                                markup: True
+                            Label:
+                                text: '133 Familes Fed'
+                                font_size: app.fs_md
+                    BoxLayout:
+                        orientation: 'vertical'
+                        BoxLayout:
+                            orientation: 'vertical'
+                            size_hint: (1, None)
+                            height: '50dp'
+                            Label:
+                                text: '[u]Families Fed Total[/u]'
+                                font_size: app.fs_lg
+                                markup: True
+                            Label:
+                                text: '1022 Familes Fed'
+                                font_size: app.fs_md
+                    BoxLayout:
+                        orientation: 'vertical'
+                        BoxLayout:
+                            orientation: 'vertical'
+                            size_hint: (1, None)
+                            height: '50dp'   
+                            Label:
+                                text: '[u]Goods Donated Last Week[/u]'
+                                font_size: app.fs_lg
+                                markup: True
+                            Label:
+                                text: '1295 Items Donatedd'
+                                font_size: app.fs_md
+                    BoxLayout:
+                        orientation: 'vertical'
+                        BoxLayout:
+                            orientation: 'vertical' 
+                            size_hint: (1, None)
+                            height: '50dp'   
+                            Label:
+                                text: '[u]Goods Donated Total[/u]'
+                                font_size: app.fs_lg
+                                markup: True
+                            Label:
+                                text: '43293 Items Donated'
+                                font_size: app.fs_md
+                    # for spacing
+                    Label:
+                        text: ''
+                
+
+            # card for the about us section 
+            StyledCard:
+                orientation: 'vertical'
+                Label:
+                    size_hint: (1, None)
+                    height: '40dp'
+                    text: 'About Us'
+                    font_size: app.fs_xl
+                    bold: True
+
+                Label:
                     font_size: app.fs_lg
-            GridLayout:
-                cols: 2
-                size_hint_y: None
-                height: dp(200)
-                spacing: dp(12)
-                StyledButton:
-                    text: 'Inventory'
-                    on_release: app.goto('inventory')
-                StyledButton:
-                    text: 'Donors'
-                    on_release: app.goto('donor_management')
-                StyledButton:
-                    text: 'Client Portal'
-                    on_release: app.goto('client_portal')
-                StyledButton:
-                    text: 'Volunteers'
-                    on_release: app.goto('volunteer_portal')
+                    text_size: self.width, None
+                    halign: 'center'
+                    text: 'We are the Python Pantry, a food pantry local to Hattiesburg, Mississippi. Founded by Benjamin Cooper, Aidan Patrick, Sajina Shrestha, and Nidhish Acharya, our mission is to provide for those in need in our community. We have done this using our python app that allows users to order food, donors to make donations, and volunteers to schedule donation pick ups. With over 1000 families fed, its safe to say the Python Pantry is making an impact!'
+
+        # box layout for all of the buttons
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: (1, None)
+            height: '75dp'
+            padding: dp(20)
+            spacing: dp(10)
+            StyledButton:
+                text: 'Inventory'
+                on_release: app.goto('inventory')
+            StyledButton:
+                text: 'Donors'
+                on_release: app.goto('donor_management')
+            StyledButton:
+                text: 'Client Portal'
+                on_release: app.goto('client_portal')
+            StyledButton:
+                text: 'Volunteers'
+                on_release: app.goto('volunteer_portal')
             BoxLayout:
                 size_hint_y: None
-                height: dp(48)
+                height: '48dp'
+                spacing: dp(5)
                 StyledButton:
                     text: 'Settings'
                     on_release: app.goto('settings')
