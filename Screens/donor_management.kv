@@ -1,41 +1,119 @@
 #:kivy 1.0
+#:import dp kivy.metrics.dp
 
 <DonorManagementScreen>:
     name: 'donor_management'
     BoxLayout:
         orientation: 'vertical'
+        # Header
         HeaderBar:
             size_hint: (1, None)
-            height: '50dp'
+            height: dp(56)
             Image:
-                source: app.icon_path('donors')
+                source: app.icon_path('home')
                 size_hint_x: None
-                width: dp(40)
+                width: dp(36)
             Label:
-                text: 'Donor Management'
+                text: 'DONOR MANAGEMENT'
                 color: app.text_color
                 font_size: app.fs_lg
-        BoxLayout:
-            orientation: 'vertical'
-            padding: dp(20)
-            spacing: dp(12)
-            StyledCard:
-                Label:
-                    text: 'Manage donor records and schedules.'
-                    color: app.text_color
-            ScrollView:
-                do_scroll_x: False
+                bold: True
+                halign: 'left'
+
+        # Body
+        ScrollView:
+            do_scroll_x: False
+            BoxLayout:
+                orientation: 'vertical'
+                padding: dp(16)
+                spacing: dp(14)
+                size_hint_y: None
+                height: self.minimum_height
+
+                # Schedule Pickup card
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: dp(300)
+                    spacing: dp(8)
+                    padding: dp(12)
+                    canvas.before:
+                        Color:
+                            rgba: app.surface
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [12]
+
+                    Label:
+                        text: 'Schedule Pickup'
+                        color: app.text_color
+                        font_size: app.fs_md
+                        bold: True
+                        size_hint_y: None
+                        height: dp(28)
+                        halign: 'left'
+                        text_size: self.size
+
+                    TextInput:
+                        id: name_input
+                        hint_text: 'Donor Name...'
+                        size_hint_y: None
+                        height: dp(36)
+                        multiline: False
+
+                    TextInput:
+                        id: item_input
+                        hint_text: 'Item Donated...'
+                        size_hint_y: None
+                        height: dp(36)
+                        multiline: False
+
+                    TextInput:
+                        id: quantity_input
+                        hint_text: 'Quantity...'
+                        size_hint_y: None
+                        height: dp(36)
+                        multiline: False
+
+                    TextInput:
+                        id: date_input
+                        hint_text: 'Date (e.g. 2026-05-10)...'
+                        size_hint_y: None
+                        height: dp(36)
+                        multiline: False
+
+                    TextInput:
+                        id: status_input
+                        hint_text: 'Status (e.g. Pending)...'
+                        size_hint_y: None
+                        height: dp(36)
+                        multiline: False
+
+                    TextInput:
+                        id: location_input
+                        hint_text: 'Pickup Location...'
+                        size_hint_y: None
+                        height: dp(36)
+                        multiline: False
+
+                    StyledButton:
+                        text: 'Schedule'
+                        size_hint_y: None
+                        height: dp(38)
+                        on_release: root.add_donor()
+
+                # Donor list
                 GridLayout:
                     id: donor_list
                     cols: 1
                     size_hint_y: None
                     height: self.minimum_height
-                    spacing: dp(8)
-            BoxLayout:
-                size_hint_y: None
-                height: dp(48)
-                StyledButton:
-                    text: 'Add Donor'
+                    spacing: dp(12)
+
+                # Back button
                 StyledButton:
                     text: 'Back'
+                    size_hint_y: None
+                    height: dp(40)
                     on_release: app.goto('dashboard')

@@ -1,0 +1,60 @@
+#:kivy 1.0
+#:import dp kivy.metrics.dp
+
+<DonorManagementConfirmScreen>:
+    name: 'donor_management_confirm'
+    BoxLayout:
+        orientation: 'vertical'
+        # Header
+        HeaderBar:
+            size_hint: (1, None)
+            height: dp(56)
+            Image:
+                source: app.icon_path('home')
+                size_hint_x: None
+                width: dp(36)
+            Label:
+                text: 'DONOR MANAGEMENT'
+                color: app.text_color
+                font_size: app.fs_lg
+                bold: True
+                halign: 'left'
+
+        # Spacer
+        Widget:
+            size_hint_y: 0.15
+
+        # Thank you message
+        Label:
+            id: thank_you_label
+            text: 'Thank you for your donation!'
+            color: app.text_color
+            font_size: dp(36)
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.size
+            size_hint_y: 0.45
+
+        # Spacer
+        Widget:
+            size_hint_y: 0.05
+
+        # Back button
+        BoxLayout:
+            size_hint_y: None
+            height: dp(80)
+            padding: dp(24)
+            canvas.before:
+                Color:
+                    rgba: app.surface
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [12]
+            StyledButton:
+                text: 'Back'
+                on_release: root.go_back()
+
+        # Bottom spacer
+        Widget:
+            size_hint_y: 0.1
