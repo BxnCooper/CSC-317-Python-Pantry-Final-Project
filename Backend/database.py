@@ -491,7 +491,47 @@ class Database():
     # gets the user's allergens
     def get_user_allergens(self, username: str):
         pass
-    
+
+    # adds a donor with name, item, quantity, date, status, and pickup location
+    def add_donor(self, name: str, item: str, quantity: str, date: str, status: str, location: str) -> bool:
+        self.init_db()
+        conn = self._get_conn()
+        cur = conn.cursor()
+        try:
+            info = f"{item}|{quantity}|{date}|{status}|{location}"
+            cur.execute("INSERT INTO donors (name, info) VALUES (?,?)", (name, info))
+            conn.commit()
+            return True
+        except Exception as e:
+            print(f"add_donor error: {e}")
+            return False
+        finally:
+            conn.close()
+
+    # lists all donors with parsed fields
+    def list_donors(self) -> list:
+        self.init_db()
+        conn = self._get_conn()
+        cur = conn.cursor()
+        cur.execute("SELECT id, name, info FROM donors ORDER BY id")
+        rows = cur.fetchall()
+        conn.close()
+        result = []
+        for r in rows:
+            parts = (r[2] or "").split("|")
+            while len(parts) < 5:
+                parts.append("")
+            result.append({
+                "id": r[0],
+                "name": r[1],
+                "item": parts[0],
+                "quantity": parts[1],
+                "date": parts[2],
+                "status": parts[3],
+                "location": parts[4],
+            })
+        return result
+
 # used for testing database functions
 if __name__ == '__main__':
     test_db = Database()
