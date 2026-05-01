@@ -4,7 +4,6 @@ import types
 import importlib
 from kivy.uix.label import Label
 from kivy.uix.button import Button
-import base64
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.properties import NumericProperty
@@ -70,41 +69,8 @@ class PantryApp(App):
         # initialize theme state and apply
         self._dark = False
         self._font_size_name = "Medium"
-        # ensure icons/assets exist (creates placeholders if missing)
-        try:
-            self.ensure_icons()
-        except Exception:
-            pass
-        # apply defaults via helper so updates later refresh widgets
+        
         self.refresh_theme(None)
-
-    def icon_path(self, name: str) -> str:
-        """Return the path to an icon image under assets/icons/<name>.png.
-
-        If the file doesn't exist, returns an empty string (KV Image will be empty).
-        """
-        p = os.path.join(BASE_DIR, "assets", "icons", f"{name}.png")
-        return p if os.path.exists(p) else ""
-
-    def ensure_icons(self):
-        """Create assets/icons directory and write placeholder PNGs if missing."""
-        icons_dir = os.path.join(BASE_DIR, "assets", "icons")
-        os.makedirs(icons_dir, exist_ok=True)
-        # tiny transparent 1x1 PNG base64 (will act as placeholder)
-        tiny_png_b64 = (
-            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMA" 
-            "ASsJTYQAAAAASUVORK5CYII="
-        )
-        names = ["logo", "inventory", "donors", "client", "volunteer", "settings", "home"]
-        for n in names:
-            path = os.path.join(icons_dir, f"{n}.png")
-            if not os.path.exists(path):
-                try:
-                    with open(path, "wb") as f:
-                        f.write(base64.b64decode(tiny_png_b64))
-                except Exception:
-                    # best-effort, ignore write errors
-                    pass
 
     def refresh_theme(self, username: str):
         dark = self.db.get_user_theme(username)
