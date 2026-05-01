@@ -6,7 +6,7 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.properties import NumericProperty
+from kivy.properties import NumericProperty, ObjectProperty
 from Backend.inventory_service import InventoryManagement
 from Backend.auth_service import AuthService
 from Backend.database import Database
@@ -28,6 +28,13 @@ class PantryApp(App):
     fs_lg = NumericProperty()
     fs_xl = NumericProperty()
     
+    card = ObjectProperty()
+    text_color = ObjectProperty()
+    primary = ObjectProperty()
+    accent = ObjectProperty
+    bg = ObjectProperty()
+    surface = ObjectProperty()
+    
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         try:
@@ -37,11 +44,19 @@ class PantryApp(App):
             from Frontend.theme import get_theme, get_font_sizes
         
         fonts = get_font_sizes("Medium")
+        theme = get_theme(False)
 
         self.fs_sm = fonts.get("sm")
         self.fs_md = fonts.get("md")
         self.fs_lg = fonts.get("lg")
         self.fs_xl = fonts.get("xl")
+        
+        self.card = theme.get("card")
+        self.text_color = theme.get("text")
+        self.primary = theme.get("primary")
+        self.accent = theme.get("accent")
+        self.bg = theme.get("bg")
+        self.surface = theme.get("surface")
         
         ensure_backend_package()
 

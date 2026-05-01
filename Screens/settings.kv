@@ -13,6 +13,7 @@
                 text: 'Settings'
                 font_size: app.fs_xl
                 color: app.text_color
+                bold: True
         # boylayout for the theme selections and label
         BoxLayout:
             orientation: 'vertical'
@@ -86,7 +87,8 @@
                         size: self.size
                         radius: [8]
                 text: 'Reset User Data'
-                on_release: app.goto('confirm')
+                font_size: app.fs_lg
+                on_release: root.delete_clicked()
         # this label is just for padding
         Label:
             text: ''
@@ -95,6 +97,11 @@
             orientation: 'vertical'
             padding: dp(20)
             spacing: dp(10)
+            Label:
+                id: status_txt
+                text: ''
+                font_size: app.fs_md
+                color: app.text_color
             StyledButton:
                 text: 'Back'
                 on_release: app.goto('dashboard')

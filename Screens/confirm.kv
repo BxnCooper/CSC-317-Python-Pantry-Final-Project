@@ -12,6 +12,7 @@
                 text: 'Confirm Data Deletion'
                 font_size: app.fs_xl
                 color: app.text_color
+                bold: True
         # for spacing
         Label:
             text: ''
@@ -40,6 +41,9 @@
         Label:
             text: ''
         # back button that sends user to the settings
-        StyledButton:
-            text: 'Back'
-            on_release: app.goto('settings')
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(20)
+            StyledButton:
+                text: 'Back'
+                on_release: app.goto('settings')

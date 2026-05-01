@@ -31,6 +31,8 @@ class SettingsScreen(Screen):
         
         app.refresh_theme(username)
         
+        self.ids.status_txt.text = ''
+        
     # toggles the dark mode based on if the user presses the light or dark button
     def toggle_dark(self, enabled: bool):
         app = App.get_running_app()
@@ -43,10 +45,15 @@ class SettingsScreen(Screen):
             return
         username = user.get('username')
         
-        # updating user preferences in database
-        self.db.update_user_theme(username, enabled)
+        if username:
         
-        app.refresh_theme(username)
+            # updating user preferences in database
+            self.db.update_user_theme(username, enabled)
+            
+            app.refresh_theme(username)
+        
+        else:
+            self.ids.status_txt.text = 'Please sign in to change settings.'
         
 
     # sets the font size based on which size button the user presses
@@ -61,7 +68,29 @@ class SettingsScreen(Screen):
             return
         username = user.get('username')
         
-        # updating user preferences in database
-        self.db.update_user_font(username, size_name)
+        if username:
+            # updating user preferences in database
+            self.db.update_user_font(username, size_name)
+            
+            app.refresh_theme(username)
         
-        app.refresh_theme(username)
+        else:
+            self.ids.status_txt.text = 'Please sign in to change settings.'
+            
+    # function that checks if the user is signed in before sending to confirm screen
+    def delete_clicked(self):
+        app = App.get_running_app()
+        
+        # getting the user's name so the database can be updates
+        # also refreshes the screen to show applied changes
+        user = getattr(app, 'current_user', None)
+        if not user:
+            app.goto('login')
+            return
+        username = user.get('username')
+        
+        if username:
+            app.goto('confirm')
+        
+        else:
+            self.ids.status_txt.text = 'Please sign in to change settings.'

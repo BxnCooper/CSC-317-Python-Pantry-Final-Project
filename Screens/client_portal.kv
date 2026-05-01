@@ -14,6 +14,7 @@
                 text: 'Client Portal'
                 color: app.text_color
                 font_size: app.fs_xl
+                bold: True
 
         # ── Scrollable body so content works on small screens ─────────
         ScrollView:
@@ -27,7 +28,7 @@
                 height: self.minimum_height
 
                 # ── Section 1: Register a new client account ──────────
-                StyledCard:
+                StyledBackgroundCard:
                     orientation: 'vertical'
                     size_hint_y: None
                     height: self.minimum_height
@@ -76,7 +77,7 @@
                         on_release: root.do_register_client(reg_username.text, reg_password.text)
 
                 # ── Section 2: Dietary restriction / allergen tracking ─
-                StyledCard:
+                StyledBackgroundCard:
                     orientation: 'vertical'
                     size_hint_y: None
                     height: self.minimum_height
