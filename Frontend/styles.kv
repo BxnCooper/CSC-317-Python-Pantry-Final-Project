@@ -10,7 +10,56 @@
     canvas.before:
         Color:
             # sets the color to be the primary app color which changes with theme
-            rgba: app.primary if hasattr(app, 'primary') else (0.06,0.53,0.86,1)
+            rgba: app.primary
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [8]
+    # color is based on user theme and font size is based on user preference
+    color: app.text_color
+    font_size: app.fs_md
+
+# header object that is on every screen
+<HeaderBar@BoxLayout>:
+    size_hint: (1, None)
+    height: dp(56)
+    padding: [dp(12), dp(8)]
+    canvas.before:
+        Color:
+            # sets the color to be the primary app color which changes with theme
+            rgba: app.primary
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    # color is based on user theme and font size is based on user preference
+    color: app.text_color
+    font_size: app.fs_xl
+
+# styled card widget that is on some screens
+<StyledCard@BoxLayout>:
+    padding: dp(12)
+    spacing: dp(8)
+    canvas.before:
+        Color:
+            # sets the color to be the primary app color which changes with theme
+            rgba: app.primary
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [8]
+    # color is based on user theme and font size is based on user preference
+    color: app.text_color
+    font_size: app.fs_md
+
+
+# styled card widget that is on some screens
+<StyledBackgroundCard@BoxLayout>:
+    padding: dp(12)
+    spacing: dp(8)
+    canvas.before:
+        Color:
+            # sets the color to be the primary app color which changes with theme
+            rgba: app.surface
         RoundedRectangle:
             pos: self.pos
             size: self.size

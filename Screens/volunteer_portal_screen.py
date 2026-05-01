@@ -69,14 +69,14 @@ class VolunteerPortalScreen(Screen):
             # decides if the button should say cancel or sign up based on if the user is already signed up
             if username:
                 if username in taken:
-                    btn = Button(text='Cancel', font_size=app.fs_md, size_hint_x=None, width=96)
+                    btn = Button(text='Cancel', font_size=app.fs_md, color=app.text_color, size_hint_x=None, width=96)
                     btn.bind(on_release=lambda inst, sid=v.get('id'): self.cancel_signup(sid))
                 else:
-                    btn = Button(text='Sign Up', font_size=app.fs_md, size_hint_x=None, width=96)
+                    btn = Button(text='Sign Up', font_size=app.fs_md, color=app.text_color, size_hint_x=None, width=96)
                     btn.bind(on_release=lambda inst, sid=v.get('id'): self.sign_up(sid))
             # if the user signs in on the blank account, will not let you sign in
             else:
-                btn = Button(text='Login to sign up', font_size=app.fs_md, size_hint_x=None, width=140)
+                btn = Button(text='Login to sign up', font_size=app.fs_md, color=app.text_color, size_hint_x=None, width=140)
                 btn.bind(on_release=lambda *_: app.goto('login'))
 
             # adding each volunteer slot to the volunteer_list

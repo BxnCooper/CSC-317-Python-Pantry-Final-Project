@@ -24,6 +24,8 @@ class ClientPortalScreen(Screen):
         user = getattr(app, 'current_user', None)
         username = user.get('username') if isinstance(user, dict) else None
         app.refresh_theme(username)
+        
+        self.ids.allergen_status.text = ''
 
     def build_allergen_checkboxes(self):
         """Dynamically build one checkbox row per allergen.
@@ -67,6 +69,7 @@ class ClientPortalScreen(Screen):
             lbl = Label(
                 text=allergen,
                 color=app.text_color,
+                font_size=app.fs_xl,
                 halign='left',
                 valign='middle'
             )

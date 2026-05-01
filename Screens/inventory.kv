@@ -11,7 +11,8 @@
             Label:
                 text: 'Inventory'
                 color: app.text_color
-                font_size: app.fs_lg
+                font_size: app.fs_xl
+                bold: True
 
         # boxlayout for the sorting options
         BoxLayout:
@@ -136,6 +137,8 @@
         BoxLayout:
             size_hint_y: None
             height: dp(48)
+            padding: dp(10)
+            spacing: dp(10)
             StyledButton:
                 text: 'Refresh'
                 on_release: root.refresh()
