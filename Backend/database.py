@@ -485,13 +485,35 @@ class Database():
             return -1
     
     # updates the user's allergens
-    def update_user_allergens(self, username: str, update: str):
-        pass
+    def update_user_allergens(self, username: str, allergens: str):
+        self.init_db()
+        conn = self._get_conn()
+        cur = conn.cursor()
+        try:
+            cur.execute("UPDATE users SET allergen_list = ? WHERE username = ?", (allergens, username))
+            conn.commit()
+            conn.close()
+            return True
+        except Exception as e:
+            print(str(e))
+            return False
     
     # gets the user's allergens
     def get_user_allergens(self, username: str):
-        pass
-
+        self.init_db()
+        conn = self._get_conn()
+        cur = conn.cursor()
+        try:
+            cur.execute("SELECT allergen_list FROM users WHERE username = ?", (username,))
+            row = cur.fetchone()
+            conn.close()
+            # return the allergen string if it exists, otherwise return empty string
+            if row and row[0]:
+                return row[0]
+            return ""
+        except Exception as e:
+            print(str(e))
+            return ""
     # adds a donor with name, item, quantity, date, status, and pickup location
     def add_donor(self, name: str, item: str, quantity: str, date: str, status: str, location: str) -> bool:
         self.init_db()

@@ -2,11 +2,14 @@
 
 <ClientPortalScreen>:
     name: 'client_portal'
+
     BoxLayout:
         orientation: 'vertical'
+
+        # ── Header bar shown at the top of every screen ──────────────
         HeaderBar:
             size_hint: (1, None)
-            height: '50dp'
+            height: '56dp'
             Image:
                 source: app.icon_path('client')
                 size_hint_x: None
@@ -15,27 +18,121 @@
                 text: 'Client Portal'
                 color: app.text_color
                 font_size: app.fs_xl
-        BoxLayout:
-            orientation: 'vertical'
-            padding: dp(20)
-            spacing: dp(12)
-            StyledCard:
-                Label:
-                    text: 'Request orders and view pickup info.'
-                    color: app.text_color
-            ScrollView:
-                do_scroll_x: False
-                GridLayout:
-                    id: client_actions
-                    cols: 1
+
+        # ── Scrollable body so content works on small screens ─────────
+        ScrollView:
+            do_scroll_x: False
+
+            BoxLayout:
+                orientation: 'vertical'
+                padding: dp(20)
+                spacing: dp(16)
+                size_hint_y: None
+                height: self.minimum_height
+
+                # ── Section 1: Register a new client account ──────────
+                StyledCard:
+                    orientation: 'vertical'
                     size_hint_y: None
                     height: self.minimum_height
+                    padding: dp(12)
+                    spacing: dp(10)
+
+                    Label:
+                        text: 'Register New Client'
+                        color: app.text_color
+                        font_size: app.fs_lg
+                        bold: True
+                        size_hint_y: None
+                        height: dp(36)
+
+                    # username input for the new client
+                    TextInput:
+                        id: reg_username
+                        hint_text: 'Username'
+                        size_hint_y: None
+                        height: dp(44)
+                        multiline: False
+
+                    # password input for the new client
+                    TextInput:
+                        id: reg_password
+                        hint_text: 'Password'
+                        password: True
+                        size_hint_y: None
+                        height: dp(44)
+                        multiline: False
+
+                    # status label shows success or error messages after registration attempt
+                    Label:
+                        id: status_label
+                        text: ''
+                        color: app.accent
+                        font_size: app.fs_sm
+                        size_hint_y: None
+                        height: dp(28)
+
+                    # triggers do_register_client() in the screen class
+                    StyledButton:
+                        text: 'Register Client'
+                        size_hint_y: None
+                        height: dp(44)
+                        on_release: root.do_register_client(reg_username.text, reg_password.text)
+
+                # ── Section 2: Dietary restriction / allergen tracking ─
+                StyledCard:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    padding: dp(12)
                     spacing: dp(8)
-            BoxLayout:
-                size_hint_y: None
-                height: dp(48)
-                StyledButton:
-                    text: 'Request Order'
-                StyledButton:
-                    text: 'Back'
-                    on_release: app.goto('dashboard')
+
+                    Label:
+                        text: 'Dietary Restrictions'
+                        color: app.text_color
+                        font_size: app.fs_lg
+                        bold: True
+                        size_hint_y: None
+                        height: dp(36)
+
+                    Label:
+                        text: 'Select any allergens that apply to the current client:'
+                        color: app.text_color
+                        font_size: app.fs_sm
+                        size_hint_y: None
+                        height: dp(28)
+
+                    # allergen checkboxes are built dynamically in build_allergen_checkboxes()
+                    # this container gets populated when the screen is entered
+                    GridLayout:
+                        id: allergen_list
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                        spacing: dp(4)
+
+                    # status label shows save confirmation or error
+                    Label:
+                        id: allergen_status
+                        text: ''
+                        color: app.accent
+                        font_size: app.fs_sm
+                        size_hint_y: None
+                        height: dp(28)
+
+                    # triggers save_allergens() in the screen class
+                    StyledButton:
+                        text: 'Save Allergens'
+                        size_hint_y: None
+                        height: dp(44)
+                        on_release: root.save_allergens()
+
+                # ── Navigation ────────────────────────────────────────
+                BoxLayout:
+                    size_hint_y: None
+                    height: dp(48)
+                    spacing: dp(8)
+
+                    StyledButton:
+                        text: 'Back'
+                        on_release: app.goto('dashboard')
