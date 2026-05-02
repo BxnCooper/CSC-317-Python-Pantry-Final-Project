@@ -63,7 +63,13 @@ class InventoryScreen(Screen):
         self.ids.inv_list.clear_widgets()
         
         self.ids.status_txt.text = ''
-        
+        self.ids.add_name_input.text = ''
+        self.ids.add_stock_input.text = ''
+        self.ids.add_allergens_input.text = ''
+        self.ids.remove_name_input.text = ''
+        self.ids.edit_name_input.text = ''
+        self.ids.edit_stock_input.text = ''
+              
         label_box = b = BoxLayout(size_hint_y=None, height=48)
         label_box.add_widget(Label(text="Item Name", font_size=app.fs_xl, color=app.text_color))
         label_box.add_widget(Label(text="Allergens", font_size=app.fs_xl, color=app.text_color))
@@ -102,6 +108,8 @@ class InventoryScreen(Screen):
             
         if not username:
             self.ids.status_txt.text = 'Sign in to add an item to inventory.'
+        elif not self.ids.add_name_input.text or self.ids.add_allergens_input.text or self.ids.add_stock_input.text:
+            self.ids.status_txt.text = 'One or more fields are empty. Make sure all fields are filled.'
         else:
             # tries to add the item to the database based on what the user enters
             try:
@@ -113,7 +121,7 @@ class InventoryScreen(Screen):
                 return True
                 
             except Exception as e:
-                print(str(e))
+                self.ids.status_txt.text = f'An error has occured, please check that inputs are valid: {e}'
                 return False
         
     # deletes an item from the database from the screen
@@ -127,6 +135,8 @@ class InventoryScreen(Screen):
             
         if not username:
             self.ids.status_txt.text = 'Sign in to remove an item from the inventory.'
+        elif not self.ids.remove_name_input.text:
+            self.ids.status_txt.text = 'One or more fields are empty. Make sure all fields are filled.'
         else:
             # tries to remove the item from the database based on user input
             try:
@@ -136,7 +146,7 @@ class InventoryScreen(Screen):
                 return True
                 
             except Exception as e:
-                print(str(e))
+                self.ids.status_txt.text = f'An error has occured, please check that inputs are valid: {e}'
                 return False
             
     
@@ -151,6 +161,8 @@ class InventoryScreen(Screen):
             
         if not username:
             self.ids.status_txt.text = 'Sign in to edit an item\'s stock.'
+        elif not self.ids.edit_name_input.text or self.ids.edit_stock_input.text:
+            self.ids.status_txt.text = 'One or more fields are empty. Make sure all fields are filled.'
         else:
             # tries to update the stock value in the database from user input
             try:
@@ -161,7 +173,7 @@ class InventoryScreen(Screen):
                 return True
             
             except Exception as e:
-                print(str(e))
+                self.ids.status_txt.text = f'An error has occured, please check that inputs are valid: {e}'
                 return False
 
     # sets current_sort to id when pressing the id sort button

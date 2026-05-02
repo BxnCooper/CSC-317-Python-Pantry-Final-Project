@@ -12,7 +12,7 @@ class LoginScreen(Screen):
         username = None
         if isinstance(user, dict):
             username = user.get('username')
-            
+         
         app.refresh_theme(username)
     
     # functions that run when entering the screen
@@ -44,7 +44,9 @@ class LoginScreen(Screen):
             
             app.refresh_theme(username)
                 
+            self.ids.welcome_txt.text = 'Welcome back to the Python Pantry!'    
+                
             app.goto("dashboard")           # sending user to the dashboard
             
         else:
-            print("Login failed:", res)     # error message shown when log in fails
+            self.ids.welcome_txt.text = f"Login failed: {res}"     # error message shown when log in fails
