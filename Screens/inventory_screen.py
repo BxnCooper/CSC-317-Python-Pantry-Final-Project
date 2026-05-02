@@ -19,6 +19,7 @@ class InventoryScreen(Screen):
         
         app.refresh_theme(username)
         
+        self.ids.status_txt.text = ''
         
         # gets the list of items from the database
         items = app.inventory.list_items()
@@ -49,6 +50,8 @@ class InventoryScreen(Screen):
         if isinstance(user, dict):
             username = user.get('username')
         
+        self.ids.status_txt.text = ''
+        
         app.refresh_theme(username)
     
     # called when updating something about the inventory or when pressing the refresh button
@@ -58,6 +61,8 @@ class InventoryScreen(Screen):
         app = App.get_running_app()
         items = app.inventory.list_items()
         self.ids.inv_list.clear_widgets()
+        
+        self.ids.status_txt.text = ''
         
         label_box = b = BoxLayout(size_hint_y=None, height=48)
         label_box.add_widget(Label(text="Item Name", font_size=app.fs_xl, color=app.text_color))
@@ -88,50 +93,76 @@ class InventoryScreen(Screen):
     def screen_add_item(self):
         app = App.get_running_app()
         
-        # tries to add the item to the database based on what the user enters
-        try:
-            name = self.ids.add_name_input.text
-            stock = int(self.ids.add_stock_input.text)
-            allergens = self.ids.add_allergens_input.text
-            app.inventory.add_item(name, stock, allergens)
-            self.refresh()          # refreshing the screen
-            return True
+        app = App.get_running_app()
+        
+        user = getattr(app, 'current_user', None)
+        username = None
+        if isinstance(user, dict):
+            username = user.get('username')
             
-        except Exception as e:
-            print(str(e))
-            return False
+        if not username:
+            self.ids.status_txt.text = 'Sign in to add an item to inventory.'
+        else:
+            # tries to add the item to the database based on what the user enters
+            try:
+                name = self.ids.add_name_input.text
+                stock = int(self.ids.add_stock_input.text)
+                allergens = self.ids.add_allergens_input.text
+                app.inventory.add_item(name, stock, allergens)
+                self.refresh()          # refreshing the screen
+                return True
+                
+            except Exception as e:
+                print(str(e))
+                return False
         
     # deletes an item from the database from the screen
     def screen_remove_item(self):
         app = App.get_running_app()
         
-        # tries to remove the item from the database based on user input
-        try:
-            name = self.ids.remove_name_input.text 
-            app.inventory.remove_item(name)
-            self.refresh()      # refreshing screen
-            return True
+        user = getattr(app, 'current_user', None)
+        username = None
+        if isinstance(user, dict):
+            username = user.get('username')
             
-        except Exception as e:
-            print(str(e))
-            return False
+        if not username:
+            self.ids.status_txt.text = 'Sign in to remove an item from the inventory.'
+        else:
+            # tries to remove the item from the database based on user input
+            try:
+                name = self.ids.remove_name_input.text 
+                app.inventory.remove_item(name)
+                self.refresh()      # refreshing screen
+                return True
+                
+            except Exception as e:
+                print(str(e))
+                return False
             
     
     # edits the stock value of an item from the screen
     def screen_edit_item(self):
         app = App.get_running_app()
         
-        # tries to update the stock value in the database from user input
-        try:
-            name = self.ids.edit_name_input.text 
-            change_in_stock = self.ids.edit_stock_input.text 
-            app.inventory.change_stock(name, change_in_stock)
-            self.refresh()      # refreshing screen
-            return True
-        
-        except Exception as e:
-            print(str(e))
-            return False
+        user = getattr(app, 'current_user', None)
+        username = None
+        if isinstance(user, dict):
+            username = user.get('username')
+            
+        if not username:
+            self.ids.status_txt.text = 'Sign in to edit an item\'s stock.'
+        else:
+            # tries to update the stock value in the database from user input
+            try:
+                name = self.ids.edit_name_input.text 
+                change_in_stock = self.ids.edit_stock_input.text 
+                app.inventory.change_stock(name, change_in_stock)
+                self.refresh()      # refreshing screen
+                return True
+            
+            except Exception as e:
+                print(str(e))
+                return False
 
     # sets current_sort to id when pressing the id sort button
     def set_sort_id(self):
