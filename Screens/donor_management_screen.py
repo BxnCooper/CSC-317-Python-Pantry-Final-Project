@@ -156,7 +156,13 @@ class DonorManagementConfirmScreen(Screen):
 
     def on_pre_enter(self, *args):
         app = App.get_running_app()
-        app.refresh_theme(None)
+
+        user = getattr(app, "current_user", None)
+        username = None
+        if isinstance(user, dict):
+            username = user.get("username")
+        
+        app.refresh_theme(username)
         lbl = self.ids.get("thank_you_label")
         if lbl:
             lbl.text = f"Thank you for your donation\n{self.donor_name}!"
