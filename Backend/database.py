@@ -344,6 +344,18 @@ class Database():
         # returning row to validate that it has updated
         return True, {"id": r[0], "name": r[1], "stock": r[2], "allergens": r[3]}
 
+    def get_stock(self, name: str):
+        self.init_db()
+        conn = self._get_conn()
+        cur = conn.cursor()
+        
+        try:
+            cur.execute("SELECT stock FROM inventory WHERE name = ?", (name,))
+            stock = cur.fetchone()[0]
+            return stock
+        
+        except Exception as e:
+            return str(e)
 
     # gets the id of an item based on the name
     # used when updating the stock and deleting the item

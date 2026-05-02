@@ -36,45 +36,50 @@
                     spacing: dp(10)
 
                     Label:
-                        text: 'Register New Client'
+                        text: 'Select Items'
                         color: app.text_color
                         font_size: app.fs_lg
                         bold: True
                         size_hint_y: None
                         height: dp(36)
-
-                    # username input for the new client
-                    TextInput:
-                        id: reg_username
-                        hint_text: 'Username'
+                    
+                    # gridlayout view called inv_list_client that displays all of the inventory items below 25 stock
+                    GridLayout:
+                        id: inv_list_client
+                        cols: 1
                         size_hint_y: None
-                        height: dp(44)
-                        multiline: False
+                        height: self.minimum_height
+                        spacing: dp(8)
 
-                    # password input for the new client
-                    TextInput:
-                        id: reg_password
-                        hint_text: 'Password'
-                        password: True
-                        size_hint_y: None
-                        height: dp(44)
-                        multiline: False
+                    BoxLayout:
+                        size_hint: (1, None)
+                        height: '40dp'
+                        Label:
+                            id: inv_stat_txt
+                            text: ''
+                            font_size: app.fs_md
+                            color: app.text_color
 
-                    # status label shows success or error messages after registration attempt
-                    Label:
-                        id: status_label
-                        text: ''
-                        color: app.accent
-                        font_size: app.fs_sm
-                        size_hint_y: None
-                        height: dp(28)
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        size_hint: (1, None)
+                        height: '50dp'
+                        spacing: dp(10)
+                        StyledButton:
+                            text: 'Order Item'
+                            on_press: root.order()
+                        TextInput:
+                            id: order_name
+                            hint_text: "Enter Item Name"
+                            size_hint: (1, None)
+                            height: '40dp'
+                        TextInput:
+                            id: order_amount
+                            hint_text: "Enter Amount"
+                            size_hint: (1, None)
+                            height: '40dp'
 
-                    # triggers do_register_client() in the screen class
-                    StyledButton:
-                        text: 'Register Client'
-                        size_hint_y: None
-                        height: dp(44)
-                        on_release: root.do_register_client(reg_username.text, reg_password.text)
+                        
 
                 # ── Section 2: Dietary restriction / allergen tracking ─
                 StyledBackgroundCard:
@@ -132,4 +137,4 @@
 
                     StyledButton:
                         text: 'Back'
-                        on_release: app.goto('dashboard')
+                        on_release: root.back()

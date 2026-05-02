@@ -28,6 +28,9 @@ class InventoryManagement():
     def get_id(self, name: str):
         return self.inventory.get_item(name)
 
+    def get_stock(self, name: str):
+        return self.inventory.get_stock(name)
+
     # changes the stock value of the object by delta (can be +/-)
     def change_stock(self, name: str, delta: int):
         item_id = self.get_id(name)
