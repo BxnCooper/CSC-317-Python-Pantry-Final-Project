@@ -48,6 +48,7 @@ class ClientPortalScreen(Screen):
                     b.add_widget(Label(text=str(it.get('stock')), font_size=app.fs_lg, color=app.text_color, size_hint_x=None, width=80))
                     self.ids.inv_list_client.add_widget(b)
                     break
+                break
         
         # build the allergen checkboxes every time we enter the screen
         # so that saved allergens are always loaded fresh from the database
@@ -94,6 +95,7 @@ class ClientPortalScreen(Screen):
                     b.add_widget(Label(text=str(it.get('stock')), font_size=app.fs_lg, color=app.text_color, size_hint_x=None, width=80))
                     self.ids.inv_list_client.add_widget(b)
                     break
+                break
 
     def build_allergen_checkboxes(self):
         """Dynamically build one checkbox row per allergen.
@@ -129,8 +131,9 @@ class ClientPortalScreen(Screen):
                 size_hint_x=None,
                 width='40dp',
                 active=(allergen in saved),  # pre-check if already saved
-                color=app.text_color
+                color=app.text_color,    
             )
+            
             # tag the checkbox with the allergen name so we can read it back later
             cb.allergen_name = allergen
 
@@ -210,6 +213,10 @@ class ClientPortalScreen(Screen):
         # checking if the item exists
         if isinstance(app.inventory.get_stock(item_name), str):
             self.ids.inv_stat_txt.text = 'That item does not exist. Try entering a different item name.'
+            return
+        # checking if order amount is less than 1
+        elif order_amount < 1:
+            self.ids.inv_stat_txt.text = 'You cannot order an amount less than 1.'
             return
         # checking if the ordered amount is more than there is in stock
         elif order_amount > app.inventory.get_stock(item_name):
