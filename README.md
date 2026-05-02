@@ -1,8 +1,10 @@
+# Welcome to the Python Pantry!
+
 The Python Pantry app uses Python 3.11+ and Kivy 2.31. 
 
 The purpose of this app is to provide a way for users to interact with the Python Pantry. This includes checking the pantry's inventory, donating goods, volunteering to pick up donations, and selecting food for them to pick up if they are in need. 
 
-Leaving the name and password blank will sign you into the guest account, which will let you see the entire app, but will not allow you to interact with certain features. This includes saving allergens, changing settings, or volunteering to pick up donations. To have access to these things, the user must create an account.
+Leaving the name and password blank will sign you into the guest account, which will let you see the entire app, but will not allow you to interact with certain features. This includes saving allergens, changing settings, ordering food, or volunteering to pick up donations. To have access to these things, the user must create an account.
 
 # Python Pantry - Local Run
 
