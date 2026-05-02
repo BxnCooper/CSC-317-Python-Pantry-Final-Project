@@ -14,6 +14,14 @@
                 font_size: app.fs_xl
                 bold: True
         
+        Label:
+            id: welcome_txt
+            size_hint: (1, None)
+            height: '50dp'
+            font_size: app.fs_xl
+            color: app.text_color
+            text: ''
+
         # box layout for the cards on dashboard
         BoxLayout:
             orientation: 'horizontal'
@@ -64,11 +72,11 @@
                             height: '50dp'
                             Label:
                                 text: '[u]Families Fed Last Week[/u]'
-                                font_size: app.fs_lg
+                                font_size: app.fs_xl
                                 markup: True
                             Label:
                                 text: '133 Familes Fed'
-                                font_size: app.fs_md
+                                font_size: app.fs_lg
                     BoxLayout:
                         orientation: 'vertical'
                         BoxLayout:
@@ -77,11 +85,11 @@
                             height: '50dp'
                             Label:
                                 text: '[u]Families Fed Total[/u]'
-                                font_size: app.fs_lg
+                                font_size: app.fs_xl
                                 markup: True
                             Label:
                                 text: '1022 Familes Fed'
-                                font_size: app.fs_md
+                                font_size: app.fs_lg
                     BoxLayout:
                         orientation: 'vertical'
                         BoxLayout:
@@ -90,11 +98,11 @@
                             height: '50dp'   
                             Label:
                                 text: '[u]Goods Donated Last Week[/u]'
-                                font_size: app.fs_lg
+                                font_size: app.fs_xl
                                 markup: True
                             Label:
                                 text: '1295 Items Donated'
-                                font_size: app.fs_md
+                                font_size: app.fs_lg
                     BoxLayout:
                         orientation: 'vertical'
                         BoxLayout:
@@ -103,11 +111,11 @@
                             height: '50dp'   
                             Label:
                                 text: '[u]Goods Donated Total[/u]'
-                                font_size: app.fs_lg
+                                font_size: app.fs_xl
                                 markup: True
                             Label:
                                 text: '43293 Items Donated'
-                                font_size: app.fs_md
+                                font_size: app.fs_lg
                     # for spacing
                     Label:
                         text: ''

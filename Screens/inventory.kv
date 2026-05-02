@@ -56,6 +56,17 @@
                 height: self.minimum_height
                 spacing: dp(8)
         
+        # boxlayout for the status text
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: (1, None)
+            height: '40sp'
+            Label:
+                id: status_txt
+                text: ''
+                font_size: app.fs_md
+                color: app.text_color
+
         # boxlayout for the adding, removing, and editing options
         BoxLayout:
             orientation: 'vertical'

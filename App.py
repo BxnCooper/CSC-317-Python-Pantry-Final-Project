@@ -191,6 +191,7 @@ class PantryApp(App):
         try:
             from kivy.core.window import Window
             Window.clearcolor = getattr(self, 'bg', (1,1,1,1))
+            Window.size = (1000, 800)
         except Exception:
             pass
         for fname in sorted(os.listdir(screens_path)):

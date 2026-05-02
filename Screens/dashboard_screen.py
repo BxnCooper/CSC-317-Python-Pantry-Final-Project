@@ -12,6 +12,11 @@ class DashboardScreen(Screen):
         if isinstance(user, dict):
             username = user.get('username')
         
+        if not username:
+            self.ids.welcome_txt.text = 'Welcome back Guest!'
+        else:
+            self.ids.welcome_txt.text = f'Welcome back {username}!'
+        
         app.refresh_theme(username)
         
         # gets the list of items from the database
@@ -39,6 +44,11 @@ class DashboardScreen(Screen):
         username = None
         if isinstance(user, dict):
             username = user.get('username')
+        
+        if not username:
+            self.ids.welcome_txt.text = 'Welcome back Guest!'
+        else:
+            self.ids.welcome_txt.text = f'Welcome back {username}!'
         
         app.refresh_theme(username)
         
